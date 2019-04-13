@@ -1,0 +1,2 @@
+RewriteEngine On 
+RewriteRule ^screenshot_qgis.jpg .private/screenshot_qgis.php [L] 
