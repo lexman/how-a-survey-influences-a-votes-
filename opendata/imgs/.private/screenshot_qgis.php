@@ -32,7 +32,8 @@ function send_image($filename) {
 }
 
 function force_no_cache() {
-    header('Cache-Control: no-cache');
+    header('ETag: "' . uniqid("20c38-") . '"');
+    header('Cache-Control: no-cache, must-revalidate');
 }
 
 if (isset($_COOKIE['color'])) {
@@ -47,7 +48,7 @@ $ua = $_SERVER['HTTP_USER_AGENT'];
 $referer = $_SERVER['HTTP_REFERER'];
 $ip = $_SERVER['REMOTE_ADDR'];
 
-$db = initdb('hits.db');
+$db = initdb('.db/hits.db');
 insert_hit($db, $user, $already_seen, $ua, $referer, $ip);
 
 force_no_cache();
