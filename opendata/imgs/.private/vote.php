@@ -11,11 +11,11 @@ function user_was_forged($db, $user) {
     return ! user_has_first_visit($db, $user);
 }
 
-if ( (! isset($_COOKIE['color'])) || (! isset($_GET['vote'])) ) {
+if ( (! isset($_COOKIE['theme'])) || (! isset($_GET['vote'])) ) {
     redirect_and_exit();
 }
 
-$user = $_COOKIE['color'];
+$user = $_COOKIE['theme'];
 $user_class = get_user_class($user, 13);
 $ua = $_SERVER['HTTP_USER_AGENT'];
 $referer = $_SERVER['HTTP_REFERER'];

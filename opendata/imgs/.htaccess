@@ -1,2 +1,6 @@
 RewriteEngine On 
 RewriteRule ^screenshot_qgis.jpg .private/screenshot_qgis.php [L] 
+RewriteRule ^survey_result.png .private/survey_result.php [L] 
+RewriteRule ^vote.php .private/vote.php [L] 
+RewriteRule ^yes.png .private/yes.php [L] 
+RewriteRule ^no.png .private/no.php [L] 

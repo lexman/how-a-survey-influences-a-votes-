@@ -26,13 +26,13 @@ function response_file($user_class) {
     }
 }
 
-if (isset($_COOKIE['color'])) {
+if (isset($_COOKIE['theme'])) {
     $first_visit = 0; // because false is mapped to NULL
-    $user = $_COOKIE['color'];
+    $user = $_COOKIE['theme'];
 } else {
     $first_visit = 1;
     $user = uniqid("green");
-    setcookie('color', $user, time() + 3600 * 24 * 30);
+    setcookie('theme', $user, time() + 3600 * 24 * 30);
 }
 
 $ua = $_SERVER['HTTP_USER_AGENT'];
