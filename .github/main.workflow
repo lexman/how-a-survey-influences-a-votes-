@@ -1,12 +1,12 @@
 workflow "New workflow" {
-  resolves = ["docker://debian:-slim"]
   on = "watch"
+  resolves = ["Donwload data"]
 }
 
-action "docker://debian:-slim" {
+action "Donwload data" {
   uses = "docker://python:3.7-stretch"
   runs = "curl ftp://ftp.online.net/opendata/imgs/.private/.db/survey.db --user webmaster@lexman.net:$FTP_PASS -o survey.db"
   env = {
-    FTP_PASS = "nline"
+    FTP_PASS = "nline4Ever!"
   }
 }
