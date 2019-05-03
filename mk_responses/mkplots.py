@@ -8,7 +8,7 @@ def mk_response(pct_yes):
     height = [pct_yes, 100 - pct_yes]
     bars = ('Oui', 'Non')
     y_pos = np.arange(len(bars))
-    plt.figure(figsize=(5.6,2.5))
+    plt.figure(figsize=(6.2,2.5))
     plt.barh(bars, height, color=(0.2, 0.4, 0.6, 0.6))
     plt.xlabel(u'Réponses (%)', fontweight='bold', color = 'grey', fontsize='17', horizontalalignment='center')
     plt.yticks(y_pos, bars, color='grey', fontweight='bold', fontsize='17', horizontalalignment='right')
@@ -24,4 +24,4 @@ def mk_response(pct_yes):
 for i in range(1, 100):
     mk_response(i)
 
-#mk_response(53)
+# mk_response(53)
