@@ -1,40 +1,38 @@
 <?php
 
-function initdb($dbname) {
-    $create_tables = ! file_exists($dbname);
-    $db = new PDO("sqlite:$dbname");
-    // Set errormode to exceptions
-    $db->setAttribute(PDO::ATTR_ERRMODE, 
-                            PDO::ERRMODE_EXCEPTION);
-    if ( ! $db) {
-        terminate($sqliteerror);
-    }
-    if ($create_tables) {
-        $db->exec('CREATE TABLE hit (dt STRING, user STRING, already_seen INTEGER, user_agent STRING, referer STRING, ip STRING)');
-    }
-    return $db;
+require("survey_lib.php");
+
+function redirect_and_exit() {
+    header('Location: https://www.data.gouv.fr/fr/datasets/carte-de-ma-commune/'); 
+    die("");
 }
 
-function insert_hit($db, $user, $already_seen, $ua, $referer, $ip) {
-    $insert = 'INSERT INTO hit (dt, user, already_seen, user_agent, referer, ip) VALUES (DATETIME("now"), :user, :already_seen, :ua, :referer, :ip)';
-    $stmt = $db->prepare($insert);
-    $nb_lines = $stmt->execute(array($user, $already_seen, $ua, $referer, $ip));
-    if ($nb_lines === false) {
-        print_r($db->errorInfo());
-        die("Unexpected error");
-    }
+function user_was_forged($db, $user) {
+    return ! user_has_first_visit($db, $user);
 }
 
-function send_image($filename) {
-    header('Content-Type: image/jpeg');
-    header('Content-Length: ' . filesize($filename));
-    readfile($filename);
+if ( (! isset($_COOKIE['color'])) || (! isset($_GET['vote'])) ) {
+    redirect_and_exit();
 }
 
-function force_no_cache() {
-    header('ETag: "' . uniqid("20c38-") . '"');
-    header('Cache-Control: no-cache, must-revalidate');
+$user = $_COOKIE['color'];
+$user_class = get_user_class($user, 13);
+$ua = $_SERVER['HTTP_USER_AGENT'];
+$referer = $_SERVER['HTTP_REFERER'];
+$ip = $_SERVER['REMOTE_ADDR'];
+$vote = $_GET['vote'];
+if ( ($vote != 'yes') && ($vote != 'no') ) {
+    redirect_and_exit();
 }
 
-header('Location: https://www.data.gouv.fr/fr/datasets/carte-de-ma-commune/'); 
+$db = initdb('.db/survey.db');
+
+if (user_was_forged($db, $user)) {
+    redirect_and_exit();
+}
+if (user_has_voted($db, $user)) {
+    redirect_and_exit();
+}
+register_vote($db, $user, $user_class, $ua, $referer, $ip, $vote);
+redirect_and_exit();
 ?>

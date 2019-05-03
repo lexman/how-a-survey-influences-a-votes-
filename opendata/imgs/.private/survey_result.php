@@ -17,30 +17,33 @@
  
 require("survey_lib.php");
 
-function response_file($pct) {
-    return "responses/response_$pct.png";
+function response_file($user_class) {    
+    $pct = percent_from_class($user_class);
+    if ($pct == null) {
+        return 'white.png';
+    } else {
+        return "responses/response_$pct.png";
+    }
 }
 
-
 if (isset($_COOKIE['color'])) {
-    $already_seen = true;
+    $first_visit = 0; // because false is mapped to NULL
     $user = $_COOKIE['color'];
 } else {
-    $already_seen = false;
+    $first_visit = 1;
     $user = uniqid("green");
     setcookie('color', $user, time() + 3600 * 24 * 30);
 }
 
-$user_class = get_user_class($user, 13);
 $ua = $_SERVER['HTTP_USER_AGENT'];
 $referer = $_SERVER['HTTP_REFERER'];
 $ip = $_SERVER['REMOTE_ADDR'];
+$user_class = get_user_class($user, 13);
 
 $db = initdb('.db/survey.db');
-insert_visit($db, $user, $user_class, $already_seen, $ua, $referer, $ip);
+insert_visit($db, $user, $user_class, $first_visit, $ua, $referer, $ip);
 
-$pct = percent_from_class($user_class);
 force_no_cache();
-send_image(response_file($pct));
+send_image(response_file($user_class));
 
 ?>
