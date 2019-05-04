@@ -5,6 +5,6 @@ workflow "New workflow" {
 
 action "Download data" {
   uses = "docker://python:3.7-stretch"
-  args = "./transfert.sh"
+  runs = ["sh", "-c", "echo $FTP_PASS"]
   secrets = ["FTP_PASS"]
 }
