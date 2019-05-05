@@ -1,15 +1,6 @@
 workflow "New workflow" {
   on = "watch"
-  resolves = ["Download data"]
-}
-
-action "Download data" {
-  uses = "docker://python:3.7-stretch"
-  runs = ["sh", "-c", "echo test $TEST_ENV $FTP_PASS"]
-  secrets = ["FTP_PASS"]
-  env = {
-    TEST_ENV = "Test val"
-  }
+  resolves = ["Push data to analytics"]
 }
 
 action "Download data from FTP" {
@@ -22,4 +13,5 @@ action "Push data to analytics" {
   uses = "docker://python:3.7-stretch"
   runs = ["sh", "-c", "echo Push"]
   secrets = ["FTP_PASS"]
+  resolves = ["Download data from FTP"]
 }
