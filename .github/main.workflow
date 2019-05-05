@@ -12,6 +12,5 @@ action "Download data from FTP" {
 action "Push data to analytics" {
   uses = "docker://python:3.7-stretch"
   runs = ["sh", "-c", "echo Push"]
-  secrets = ["FTP_PASS"]
   needs = ["Download data from FTP"]
 }
