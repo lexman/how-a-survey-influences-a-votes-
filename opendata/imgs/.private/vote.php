@@ -3,7 +3,7 @@
 require("survey_lib.php");
 
 function redirect_and_exit() {
-    header('Location: https://www.data.gouv.fr/fr/datasets/carte-de-ma-commune/'); 
+    header('Location: https://www.data.gouv.fr/fr/datasets/carte-des-departements-2/'); 
     die("");
 }
 
